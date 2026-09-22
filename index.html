@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Leydi 💛 - Un Rincón de Luz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Poppins:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #030008;
+            overflow-x: hidden;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-serif-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Glassmorphism custom styling */
+        .glass-card {
+            background: rgba(20, 10, 35, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 183, 3, 0.2);
+        }
+
+        /* Glow effects */
+        .text-glow {
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 0 30px rgba(255, 183, 3, 0.5);
+        }
+
+        .glow-box {
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), inset 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Animated Pulsing Wax Seal */
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 0 0 40px rgba(255, 183, 3, 0.5);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 35px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 183, 3, 0.8);
+            }
+        }
+
+        .pulse-seal {
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* Envelope 3D dynamics */
+        .envelope-container {
+            perspective: 1200px;
+        }
+
+        .envelope {
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Flower Bloom Animations */
+        .petal {
+            transform-origin: center bottom;
+            transition: transform 2.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 2s ease-in;
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+        }
+
+        .bloom .petal {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stem {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            transition: stroke-dashoffset 2.5s ease-out;
+        }
+
+        .bloom .stem {
+            stroke-dashoffset: 0;
+        }
+
+        /* Shimmer button animation */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .btn-shimmer {
+            background: linear-gradient(90deg, #ffb703 0%, #fff2a3 50%, #ffb703 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+    </style>
+</head>
+<body class="h-full min-h-screen text-slate-100 flex flex-col justify-between items-center relative overflow-hidden select-none">
+
+    <!-- Interactive Background Canvas: Stars, Nebulae, Shooting Stars, Cursor Petals -->
+    <canvas id="skyCanvas" class="fixed inset-0 pointer-events-auto z-0"></canvas>
+
+    <!-- Music Control Floating Button -->
+    <div class="fixed top-5 right-5 z-50">
+        <button id="musicBtn" onclick="toggleAudio()" class="glass-card px-4 py-2 rounded-full flex items-center gap-2 text-xs font-semibold text-amber-300 border border-amber-400/40 hover:border-amber-300 transition-all duration-300 shadow-xl group">
+            <i id="musicIcon" class="fas fa-music text-amber-400 group-hover:rotate-12 transition-transform"></i>
+            <span id="musicText">Melodía para Leydi</span>
+        </button>
+    </div>
+
+    <!-- Main Interactive Container -->
+    <main class="relative z-10 w-full max-w-4xl mx-auto px-4 py-8 min-h-screen flex flex-col justify-center items-center">
+
+        <!-- INTRO SCREEN / 3D WAX SEAL ENVELOPE -->
+        <div id="introScreen" class="flex flex-col items-center justify-center text-center transition-all duration-1000 w-full max-w-md">
+            
+            <div class="mb-6 relative">
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest text-amber-300 bg-amber-500/10 border border-amber-400/30 uppercase mb-3 shadow-sm">
+                    Especialmente para ti
+                </span>
+                <h1 class="text-4xl sm:text-5xl font-serif-title text-amber-200 text-glow">Para Leydi 💛</h1>
+                <p class="text-xs text-amber-200/80 mt-2 font-light">Toca el sello mágico de cera para abrir</p>
+            </div>
+
+            <!-- Envelope Container -->
+            <div class="envelope-container w-72 h-52 sm:w-80 sm:h-56 my-4 cursor-pointer group" onclick="openEnvelope()">
+                <div class="relative w-full h-full">
+                    <!-- Glow Behind Envelope -->
+                    <div class="absolute -inset-2 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 rounded-3xl blur-2xl opacity-30 group-hover:opacity-70 transition duration-1000"></div>
+
+                    <!-- Glass Envelope Structure -->
+                    <div class="glass-card w-full h-full rounded-2xl relative overflow-hidden flex flex-col justify-between p-6 border-amber-300/50">
+                        <svg class="absolute inset-0 w-full h-full stroke-amber-400/25 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="160" y2="110" stroke-width="1.5" />
+                            <line x1="320" y1="0" x2="160" y2="110" stroke-width="1.5" />
+                            <line x1="0" y1="220" x2="160" y2="110" stroke-width="1.5" />
+                            <line x1="320" y1="220" x2="160" y2="110" stroke-width="1.5" />
+                        </svg>
+
+                        <div class="flex justify-between items-start z-10">
+                            <i class="fas fa-sparkles text-amber-300 text-sm"></i>
+                            <span class="text-[11px] tracking-widest text-amber-300/80 font-mono">24.09.2026</span>
+                        </div>
+
+                        <!-- Wax Seal Center Button -->
+                        <div class="self-center z-20 my-auto">
+                            <div class="pulse-seal w-20 h-20 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-600 flex flex-col items-center justify-center text-amber-950 font-bold shadow-2xl border-2 border-yellow-200 transform group-hover:scale-110 transition duration-300">
+                                <i class="fas fa-heart text-2xl text-amber-950 mb-0.5"></i>
+                                <span class="text-[10px] tracking-tighter uppercase font-bold text-amber-950">Leydi</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center z-10">
+                            <p class="text-xs font-handwriting text-amber-200 text-base">Un mensaje te espera ✨</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN ROMANTIC CONTENT (Revealed on click) -->
+        <div id="contentScreen" class="hidden w-full flex-col items-center justify-center transition-opacity duration-1000">
+            
+            <!-- Sunflower & Rose SVG Bloom Container -->
+            <div id="flowerContainer" class="w-full max-w-lg h-56 sm:h-64 relative mb-2 flex justify-center items-center pointer-events-none">
+                <svg id="flowerSvg" class="w-full h-full overflow-visible" viewBox="0 0 600 350">
+                    <defs>
+                        <!-- Gradients for realistic golden sunflowers and roses -->
+                        <radialGradient id="sunflowerCenter" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#3d1d00" />
+                            <stop offset="70%" stop-color="#6b3a00" />
+                            <stop offset="100%" stop-color="#2d1500" />
+                        </radialGradient>
+                        
+                        <linearGradient id="petalGold" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#ff8c00" />
+                            <stop offset="50%" stop-color="#ffb703" />
+                            <stop offset="100%" stop-color="#fffae0" />
+                        </linearGradient>
+
+                        <linearGradient id="roseYellow" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#e67e22" />
+                            <stop offset="50%" stop-color="#f1c40f" />
+                            <stop offset="100%" stop-color="#fff9d2" />
+                        </linearGradient>
+
+                        <linearGradient id="stemGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#2d6a4f" />
+                            <stop offset="100%" stop-color="#1b4332" />
+                        </linearGradient>
+
+                        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                            <feGaussianBlur stdDeviation="7" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+
+                    <!-- Stems & Leaves -->
+                    <g filter="url(#glow)">
+                        <path class="stem" d="M 220 350 Q 240 250 210 160" fill="none" stroke="url(#stemGreen)" stroke-width="6" stroke-linecap="round" />
+                        <path class="stem" d="M 300 350 Q 300 220 300 110" fill="none" stroke="url(#stemGreen)" stroke-width="8" stroke-linecap="round" />
+                        <path class="stem" d="M 380 350 Q 360 250 390 170" fill="none" stroke="url(#stemGreen)" stroke-width="6" stroke-linecap="round" />
+
+                        <!-- Botanical Leaves -->
+                        <path class="stem" d="M 295 260 Q 220 240 230 215 Q 280 230 295 260" fill="#2d6a4f" opacity="0.9" />
+                        <path class="stem" d="M 305 240 Q 380 220 370 195 Q 320 210 305 240" fill="#2d6a4f" opacity="0.9" />
+                    </g>
+
+                    <!-- CENTER SUNFLOWER -->
+                    <g id="centerSunflower" transform="translate(300, 110)">
+                        <g id="sunflowerPetals" filter="url(#glow)"></g>
+                        <circle cx="0" cy="0" r="28" fill="url(#sunflowerCenter)" stroke="#e67e22" stroke-width="2" />
+                        <circle cx="0" cy="0" r="22" fill="none" stroke="#ffb703" stroke-width="1" stroke-dasharray="3 3" opacity="0.7" />
+                    </g>
+
+                    <!-- LEFT ROSE -->
+                    <g id="leftRose" transform="translate(210, 160)" filter="url(#glow)">
+                        <g id="rosePetalsLeft"></g>
+                    </g>
+
+                    <!-- RIGHT ROSE -->
+                    <g id="rightRose" transform="translate(390, 170)" filter="url(#glow)">
+                        <g id="rosePetalsRight"></g>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Romantic Letter Card -->
+            <div class="glass-card w-full max-w-xl rounded-3xl p-6 sm:p-10 relative overflow-hidden text-center shadow-2xl border border-amber-300/40">
+                <div class="absolute -top-16 -left-16 w-36 h-36 bg-amber-400/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-16 -right-16 w-36 h-36 bg-yellow-400/10 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10">
+                    <div class="flex justify-center items-center gap-3 mb-4">
+                        <span class="h-[1px] w-10 bg-amber-400/40"></span>
+                        <i class="fas fa-heart text-amber-300 text-xs"></i>
+                        <span class="h-[1px] w-10 bg-amber-400/40"></span>
+                    </div>
+
+                    <!-- Title -->
+                    <h2 class="text-3xl sm:text-4xl font-handwriting text-amber-200 text-glow mb-4">
+                        Para la persona más especial: Leydi ✨
+                    </h2>
+
+                    <!-- Romantic Letter Text -->
+                    <div class="space-y-4 text-slate-100 text-sm sm:text-base font-light leading-relaxed text-center sm:text-justify max-w-lg mx-auto">
+                        <p class="first-letter:text-3xl first-letter:font-serif-title first-letter:text-amber-300">
+                            Hay personas que llegan a la vida de uno y, sin pedir permiso, la llenan de una luz inmensa. Tú eres una de esas personas tan escasas, bonitas e inolvidables.
+                        </p>
+                        <p>
+                            Quería regalarte un rincón especial hecho solo para ti, de estrellas que no se apagan y flores doradas que nunca se marchitan. Un pequeño refugio de luz donde puedas recordar lo infinitamente valiosa que eres.
+                        </p>
+                        <p class="text-amber-200 font-medium text-center">
+                            Gracias por ser tú, por tu sonrisa y por la magia sutil que transmites en cada detalle.
+                        </p>
+                        <p class="font-handwriting text-2xl sm:text-3xl text-amber-300 text-center pt-2">
+                            Con todo mi cariño y admiración, hoy y siempre. 💛
+                        </p>
+                    </div>
+
+                    <!-- Poetic Day Counter -->
+                    <div class="mt-8 pt-6 border-t border-amber-300/20 flex flex-col items-center gap-2">
+                        <p class="text-xs text-amber-300/80 uppercase tracking-widest font-mono">Un detalle pensado especialmente para hoy</p>
+                        <div id="poeticCounter" class="text-sm font-semibold text-amber-200 text-glow">
+                            Jueves, 24 de Septiembre • Un día para celebrar tu presencia
+                        </div>
+                    </div>
+
+                    <!-- Replay Magic Button -->
+                    <div class="mt-6 flex justify-center">
+                        <button onclick="triggerPetalBurst()" class="text-xs text-amber-300 hover:text-amber-100 flex items-center gap-2 px-5 py-2.5 rounded-full border border-amber-300/30 hover:border-amber-300 transition duration-300 bg-amber-500/10 hover:bg-amber-500/20">
+                            <i class="fas fa-wand-magic-sparkles"></i> Llenar de más magia el cielo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-xs text-amber-200/40 text-center mt-6 font-light">Diseñado con todo el corazón especialmente para Leydi</p>
+        </div>
+    </main>
+
+    <script>
+        /* -------------------------------------------------------------
+           1. NIGHT SKY CANVAS ENGINE (Nebula, Shooting Stars & Touch Petals)
+           ------------------------------------------------------------- */
+        const canvas = document.getElementById('skyCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        let shootingStars = [];
+        let trailParticles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initStars();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function initStars() {
+            stars = [];
+            const count = Math.floor((width * height) / 2500);
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 1.8 + 0.2,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.02 + 0.005,
+                    color: Math.random() > 0.8 ? '#ffe875' : '#ffffff'
+                });
+            }
+        }
+
+        function createShootingStar() {
+            if (Math.random() < 0.03 && shootingStars.length < 3) {
+                shootingStars.push({
+                    x: Math.random() * width * 0.8,
+                    y: Math.random() * height * 0.4,
+                    length: Math.random() * 80 + 40,
+                    speed: Math.random() * 8 + 4,
+                    angle: Math.PI / 4,
+                    alpha: 1
+                });
+            }
+        }
+
+        function handlePointer(e) {
+            const x = e.clientX || (e.touches && e.touches[0].clientX);
+            const y = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            if (x && y) {
+                for (let i = 0; i < 2; i++) {
+                    trailParticles.push({
+                        x: x + (Math.random() - 0.5) * 15,
+                        y: y + (Math.random() - 0.5) * 15,
+                        size: Math.random() * 3 + 1.5,
+                        alpha: 1,
+                        vx: (Math.random() - 0.5) * 1.2,
+                        vy: (Math.random() - 0.5) * 1.2 - 0.8,
+                        color: Math.random() > 0.4 ? '#ffb703' : '#ffd700'
+                    });
+                }
+            }
+        }
+
+        window.addEventListener('mousemove', handlePointer);
+        window.addEventListener('touchmove', handlePointer);
+
+        function renderNebula() {
+            // Purple & Gold Deep Space Nebula Effect
+            const grad1 = ctx.createRadialGradient(width * 0.3, height * 0.3, 50, width * 0.3, height * 0.3, width * 0.6);
+            grad1.addColorStop(0, 'rgba(88, 28, 135, 0.25)');
+            grad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad1;
+            ctx.fillRect(0, 0, width, height);
+
+            const grad2 = ctx.createRadialGradient(width * 0.7, height * 0.7, 50, width * 0.7, height * 0.7, width * 0.5);
+            grad2.addColorStop(0, 'rgba(217, 119, 6, 0.15)');
+            grad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad2;
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            
+            renderNebula();
+
+            // Render Stars
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+                ctx.globalAlpha = Math.abs(star.alpha);
+                ctx.fillStyle = star.color;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Render Shooting Stars
+            createShootingStar();
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+                s.x += Math.cos(s.angle) * s.speed;
+                s.y += Math.sin(s.angle) * s.speed;
+                s.alpha -= 0.015;
+
+                if (s.alpha <= 0) {
+                    shootingStars.splice(i, 1);
+                } else {
+                    ctx.globalAlpha = s.alpha;
+                    const grad = ctx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
+                    grad.addColorStop(0, '#ffffff');
+                    grad.addColorStop(0.5, '#ffb703');
+                    grad.addColorStop(1, 'transparent');
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x, s.y);
+                    ctx.lineTo(s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
+                    ctx.stroke();
+                }
+            }
+
+            // Render Cursor Trail Particles
+            for (let i = trailParticles.length - 1; i >= 0; i--) {
+                const p = trailParticles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.02;
+
+                if (p.alpha <= 0) {
+                    trailParticles.splice(i, 1);
+                } else {
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#ffd700';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            requestAnimationFrame(animateCanvas);
+        }
+
+        resizeCanvas();
+        animateCanvas();
+
+        /* -------------------------------------------------------------
+           2. BOTANICAL SVG GENERATOR (Sunflower & Roses)
+           ------------------------------------------------------------- */
+        function buildFlowerSVG() {
+            // Sunflower Petals
+            const sunflowerGroup = document.getElementById('sunflowerPetals');
+            const totalPetals = 22;
+            for (let i = 0; i < totalPetals; i++) {
+                const angle = (360 / totalPetals) * i;
+                const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                petal.setAttribute('d', 'M 0 0 C -12 -30, -14 -60, 0 -85 C 14 -60, 12 -30, 0 0 Z');
+                petal.setAttribute('fill', 'url(#petalGold)');
+                petal.setAttribute('class', 'petal');
+                petal.style.transform = `rotate(${angle}deg)`;
+                petal.style.transitionDelay = `${0.2 + (i % 6) * 0.08}s`;
+                sunflowerGroup.appendChild(petal);
+            }
+
+            // Left Rose Petals
+            const roseLeft = document.getElementById('rosePetalsLeft');
+            const rosePetalCounts = 14;
+            for (let i = 0; i < rosePetalCounts; i++) {
+                const scale = 1 - (i * 0.055);
+                const angle = i * 42;
+                const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                petal.setAttribute('d', 'M 0 0 C -20 -20, -22 -42, 0 -52 C 22 -42, 20 -20, 0 0 Z');
+                petal.setAttribute('fill', 'url(#roseYellow)');
+                petal.setAttribute('class', 'petal');
+                petal.style.transform = `scale(${scale}) rotate(${angle}deg)`;
+                petal.style.transitionDelay = `${0.5 + i * 0.07}s`;
+                roseLeft.appendChild(petal);
+            }
+
+            // Right Rose Petals
+            const roseRight = document.getElementById('rosePetalsRight');
+            for (let i = 0; i < rosePetalCounts; i++) {
+                const scale = 1 - (i * 0.055);
+                const angle = i * -42;
+                const petal = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                petal.setAttribute('d', 'M 0 0 C -20 -20, -22 -42, 0 -52 C 22 -42, 20 -20, 0 0 Z');
+                petal.setAttribute('fill', 'url(#roseYellow)');
+                petal.setAttribute('class', 'petal');
+                petal.style.transform = `scale(${scale}) rotate(${angle}deg)`;
+                petal.style.transitionDelay = `${0.7 + i * 0.07}s`;
+                roseRight.appendChild(petal);
+            }
+        }
+
+        buildFlowerSVG();
+
+        /* -------------------------------------------------------------
+           3. WEB AUDIO API ROMANTIC MUSIC SYNTHESIS
+           ------------------------------------------------------------- */
+        let audioCtx = null;
+        let isPlaying = false;
+        let musicLoop = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playPianoTone(freq, duration = 2.5) {
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+                gain.gain.setValueAtTime(0, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log('Audio note error:', e);
+            }
+        }
+
+        function toggleAudio() {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const icon = document.getElementById('musicIcon');
+            const text = document.getElementById('musicText');
+
+            if (isPlaying) {
+                isPlaying = false;
+                clearInterval(musicLoop);
+                icon.className = 'fas fa-music text-amber-400';
+                text.innerText = 'Melodía para Leydi';
+            } else {
+                isPlaying = true;
+                icon.className = 'fas fa-pause text-amber-400';
+                text.innerText = 'Pausar Melodía';
+
+                // Soft soothing music pentatonic melody (Key of C/G)
+                const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+                
+                playPianoTone(scale[0], 3);
+                setTimeout(() => playPianoTone(scale[2], 3), 400);
+
+                musicLoop = setInterval(() => {
+                    const note = scale[Math.floor(Math.random() * scale.length)];
+                    playPianoTone(note, 2.8);
+                }, 1600);
+            }
+        }
+
+        /* -------------------------------------------------------------
+           4. INTERACTIVE REVEAL & CONFETTI PETALS
+           ------------------------------------------------------------- */
+        function openEnvelope() {
+            initAudio();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            // Play pleasant opening chime
+            if (audioCtx) {
+                playPianoTone(523.25, 1.8);
+                setTimeout(() => playPianoTone(659.25, 1.8), 180);
+                setTimeout(() => playPianoTone(783.99, 2.2), 360);
+            }
+
+            const intro = document.getElementById('introScreen');
+            const content = document.getElementById('contentScreen');
+            const svg = document.getElementById('flowerSvg');
+
+            intro.style.opacity = '0';
+            intro.style.transform = 'scale(0.9)';
+
+            setTimeout(() => {
+                intro.classList.add('hidden');
+                content.classList.remove('hidden');
+                content.style.opacity = '0';
+
+                setTimeout(() => {
+                    content.style.opacity = '1';
+                    svg.classList.add('bloom');
+                    triggerPetalBurst();
+                    if (!isPlaying) toggleAudio();
+                }, 100);
+            }, 800);
+        }
+
+        function triggerPetalBurst() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 90,
+                    origin: { y: 0.6 },
+                    colors: ['#ffd700', '#ffb703', '#ffffff', '#ffe875'],
+                    shapes: ['circle'],
+                    scalar: 1.2
+                });
+
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 30,
+                        angle: 60,
+                        spread: 60,
+                        origin: { x: 0 },
+                        colors: ['#ffb703', '#ffd700'],
+                        shapes: ['heart']
+                    });
+                    confetti({
+                        particleCount: 30,
+                        angle: 120,
+                        spread: 60,
+                        origin: { x: 1 },
+                        colors: ['#ffb703', '#ffd700'],
+                        shapes: ['heart']
+                    });
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
