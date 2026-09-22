@@ -160,24 +160,9 @@
         .flowers-svg {
             width: 320px;
             height: 240px;
-            overflow: visible;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-            -webkit-filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+            display: block;
+            margin: 0 auto;
         }
-
-        .stem {
-            stroke-dasharray: 250;
-            stroke-dashoffset: 250;
-            animation: growStem 2s forwards ease-out 0.3s;
-        }
-
-        .flower-bloom {
-            opacity: 0;
-            animation: fadeInFlowers 1s forwards ease-out 1s;
-        }
-
-        @keyframes growStem { to { stroke-dashoffset: 0; } }
-        @keyframes fadeInFlowers { to { opacity: 1; } }
 
         .letter-card {
             background: rgba(15, 10, 25, 0.7);
@@ -238,7 +223,7 @@
         <button class="btn-open" onclick="openLetter()">Abrir 💛</button>
 
         <div class="card-content">
-            <svg class="flowers-svg" viewBox="0 0 320 240">
+            <svg class="flowers-svg" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="stemGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#52b788"/>
@@ -248,7 +233,7 @@
                     <linearGradient id="petalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#fff066"/>
                         <stop offset="50%" stop-color="#ffd700"/>
-                        <stop offset="100%" stop-color="#ff8800"/>
+                        <stop offset="100%" stop-color="#ff9100"/>
                     </linearGradient>
 
                     <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
@@ -258,61 +243,61 @@
                     </radialGradient>
                 </defs>
 
-                <path class="stem" d="M160 240 C 160 180, 160 140, 160 100" stroke="url(#stemGrad)" stroke-width="7" fill="none" stroke-linecap="round"/>
-                <path class="stem" d="M160 180 C 130 160, 100 140, 85 110" stroke="url(#stemGrad)" stroke-width="5" fill="none" stroke-linecap="round"/>
-                <path class="stem" d="M160 180 C 190 160, 220 140, 235 110" stroke="url(#stemGrad)" stroke-width="5" fill="none" stroke-linecap="round"/>
+                <!-- Tallos -->
+                <path d="M160 240 L160 100" stroke="url(#stemGrad)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M160 180 L85 110" stroke="url(#stemGrad)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M160 180 L235 110" stroke="url(#stemGrad)" stroke-width="5" stroke-linecap="round"/>
 
-                <g class="flower-bloom">
-                    <path d="M160 170 C 120 155, 110 185, 160 180" fill="#2d6a4f" stroke="#52b788" stroke-width="1"/>
-                    <path d="M160 170 C 200 155, 210 185, 160 180" fill="#2d6a4f" stroke="#52b788" stroke-width="1"/>
+                <!-- Hojas -->
+                <path d="M160 170 Q120 150 120 175 Q140 185 160 175 Z" fill="#2d6a4f" stroke="#52b788" stroke-width="1"/>
+                <path d="M160 170 Q200 150 200 175 Q180 185 160 175 Z" fill="#2d6a4f" stroke="#52b788" stroke-width="1"/>
+
+                <!-- Flor Izquierda -->
+                <g>
+                    <circle cx="85" cy="96" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="99" cy="110" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="85" cy="124" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="71" cy="110" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="75" cy="100" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="95" cy="100" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="95" cy="120" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="75" cy="120" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="85" cy="110" r="10" fill="#ffaa00"/>
                 </g>
 
-                <g class="flower-bloom" transform="translate(85, 110)">
-                    <circle cx="0" cy="-14" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="14" cy="0" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="0" cy="14" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-14" cy="0" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-10" cy="-10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="10" cy="-10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="10" cy="10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-10" cy="10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="0" cy="0" r="9" fill="#ffaa00"/>
+                <!-- Flor Derecha -->
+                <g>
+                    <circle cx="235" cy="96" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="249" cy="110" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="235" cy="124" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="221" cy="110" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="225" cy="100" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="245" cy="100" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="245" cy="120" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="225" cy="120" r="11" fill="url(#petalGrad)"/>
+                    <circle cx="235" cy="110" r="10" fill="#ffaa00"/>
                 </g>
 
-                <g class="flower-bloom" transform="translate(235, 110)">
-                    <circle cx="0" cy="-14" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="14" cy="0" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="0" cy="14" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-14" cy="0" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-10" cy="-10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="10" cy="-10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="10" cy="10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="-10" cy="10" r="10" fill="url(#petalGrad)"/>
-                    <circle cx="0" cy="0" r="9" fill="#ffaa00"/>
-                </g>
+                <!-- Girasol Principal Central -->
+                <g>
+                    <ellipse cx="160" cy="45" rx="8" ry="20" fill="url(#petalGrad)"/>
+                    <ellipse cx="160" cy="115" rx="8" ry="20" fill="url(#petalGrad)"/>
+                    <ellipse cx="125" cy="80" rx="20" ry="8" fill="url(#petalGrad)"/>
+                    <ellipse cx="195" cy="80" rx="20" ry="8" fill="url(#petalGrad)"/>
+                    
+                    <ellipse cx="135" cy="55" rx="10" ry="20" fill="url(#petalGrad)" transform="rotate(-45 135 55)"/>
+                    <ellipse cx="185" cy="55" rx="10" ry="20" fill="url(#petalGrad)" transform="rotate(45 185 55)"/>
+                    <ellipse cx="135" cy="105" rx="10" ry="20" fill="url(#petalGrad)" transform="rotate(45 135 105)"/>
+                    <ellipse cx="185" cy="105" rx="10" ry="20" fill="url(#petalGrad)" transform="rotate(-45 185 105)"/>
 
-                <g class="flower-bloom" transform="translate(160, 80)">
-                    <g fill="url(#petalGrad)">
-                        <g transform="rotate(0)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(22.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(45)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(67.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(90)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(112.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(135)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(157.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(180)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(202.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(225)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(247.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(270)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(292.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(315)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                        <g transform="rotate(337.5)"><ellipse cx="0" cy="-30" rx="7" ry="18"/></g>
-                    </g>
+                    <ellipse cx="147" cy="48" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(-22.5 147 48)"/>
+                    <ellipse cx="173" cy="48" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(22.5 173 48)"/>
+                    <ellipse cx="147" cy="112" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(22.5 147 112)"/>
+                    <ellipse cx="173" cy="112" rx="8" ry="18" fill="url(#petalGrad)" transform="rotate(-22.5 173 112)"/>
 
-                    <circle cx="0" cy="0" r="18" fill="url(#centerGrad)" stroke="#ffd700" stroke-width="1.5"/>
-                    <circle cx="0" cy="0" r="13" fill="none" stroke="#ff9100" stroke-width="1" stroke-dasharray="2,2"/>
+                    <!-- Centro Semillas -->
+                    <circle cx="160" cy="80" r="22" fill="url(#centerGrad)" stroke="#ffd700" stroke-width="2"/>
+                    <circle cx="160" cy="80" r="15" fill="none" stroke="#ff9100" stroke-width="1.5" stroke-dasharray="3,3"/>
                 </g>
             </svg>
 
@@ -334,12 +319,13 @@
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            initCosmos();
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
 
         let heartParticles = [];
-        const particleCount = 400;
+        let galaxies = [];
+        let stars = [];
+        const particleCount = 350;
 
         function heartShape(t) {
             const x = 16 * Math.pow(Math.sin(t), 3);
@@ -347,7 +333,31 @@
             return { x, y };
         }
 
-        function initHeart() {
+        function createGalaxy(x, y, scale, speed, arms, color) {
+            let particles = [];
+            let totalParticles = 140;
+            let b = 0.22; // Parámetro de la espiral logarítmica (r = a * e^(b * theta))
+
+            for (let i = 0; i < totalParticles; i++) {
+                let theta = (i / totalParticles) * Math.PI * 6;
+                let armOffset = ((i % arms) * (2 * Math.PI / arms));
+                let angle = theta + armOffset;
+                let r = 2.5 * Math.exp(b * theta) * scale;
+                let noise = (Math.random() - 0.5) * r * 0.25;
+
+                particles.push({
+                    r: r + noise,
+                    angle: angle,
+                    size: Math.random() * 1.5 + 0.8,
+                    alpha: Math.random() * 0.7 + 0.3
+                });
+            }
+
+            return { x, y, particles, speed, color, rotation: Math.random() * Math.PI * 2 };
+        }
+
+        function initCosmos() {
+            // Corazón
             heartParticles = [];
             for (let i = 0; i < particleCount; i++) {
                 const t = Math.random() * Math.PI * 2;
@@ -364,13 +374,96 @@
                     jitter: (Math.random() - 0.5) * 8
                 });
             }
+
+            // Galaxias espirales (esquina superior izquierda, superior derecha e inferior izquierda)
+            galaxies = [
+                createGalaxy(canvas.width * 0.15, canvas.height * 0.2, 0.7, 0.003, 2, '#ffd700'),
+                createGalaxy(canvas.width * 0.85, canvas.height * 0.25, 0.8, -0.002, 3, '#ff4d6d'),
+                createGalaxy(canvas.width * 0.18, canvas.height * 0.8, 0.65, 0.0025, 2, '#e0aaff')
+            ];
+
+            // Estrellas geométricas matemáticas tipo Destellos/Astros
+            stars = [];
+            const numStars = 25;
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 5 + 3,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.02 + 0.005,
+                    rotSpeed: (Math.random() - 0.5) * 0.02,
+                    angle: Math.random() * Math.PI
+                });
+            }
         }
-        initHeart();
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
         let time = 0;
-        function animateHeart() {
+
+        function drawMathStar(x, y, size, angle, alpha) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = '#ffd700';
+            ctx.fillStyle = '#ffffff';
+            ctx.lineWidth = 0.8;
+
+            // Cruz central del destello
+            ctx.beginPath();
+            ctx.moveTo(-size, 0); ctx.lineTo(size, 0);
+            ctx.moveTo(0, -size); ctx.lineTo(0, size);
+            ctx.stroke();
+
+            // Rombo interno
+            ctx.beginPath();
+            ctx.moveTo(0, -size * 0.4);
+            ctx.lineTo(size * 0.4, 0);
+            ctx.lineTo(0, size * 0.4);
+            ctx.lineTo(-size * 0.4, 0);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+
+            // 1. Dibujar Galaxias
+            galaxies.forEach(g => {
+                g.rotation += g.speed;
+                g.particles.forEach(p => {
+                    let currentAngle = p.angle + g.rotation;
+                    let px = g.x + Math.cos(currentAngle) * p.r;
+                    let py = g.y + Math.sin(currentAngle) * p.r;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = g.color;
+                    ctx.globalAlpha = p.alpha * 0.65;
+                    ctx.fill();
+                });
+                // Núcleo brillante de la galaxia
+                ctx.beginPath();
+                ctx.arc(g.x, g.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.globalAlpha = 0.9;
+                ctx.fill();
+            });
+
+            // 2. Dibujar Estrellas Matemáticas
+            stars.forEach(s => {
+                s.alpha += s.speed;
+                s.angle += s.rotSpeed;
+                let currentAlpha = (Math.sin(s.alpha) + 1) / 2; // Parpadeo suave entre 0 y 1
+                drawMathStar(s.x, s.y, s.size, s.angle, currentAlpha * 0.8);
+            });
+
+            // 3. Dibujar Corazón de Partículas
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2 - 20;
             const pulse = 1 + Math.sin(time * 2) * 0.05;
@@ -391,10 +484,11 @@
 
             ctx.globalAlpha = 1;
             time += 0.02;
-            requestAnimationFrame(animateHeart);
+            requestAnimationFrame(animate);
         }
-        animateHeart();
+        animate();
 
+        // Sistema de Música y Audio
         let audioCtx = null;
         let isPlaying = false;
         let audioTimer = null;
@@ -449,7 +543,6 @@
             }
         }
 
-        // Iniciar audio automáticamente al primer toque/clic en cualquier parte de la pantalla
         const autoPlayHandler = () => {
             startAudioContext();
             playMelody();
